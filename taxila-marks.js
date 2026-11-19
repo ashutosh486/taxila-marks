@@ -1,5 +1,6 @@
 /* Taxila Marks: bookmarklet showing marks, deadlines and submission status across all Taxila (Moodle) courses.
-   After editing, run `node build.js` to rebuild the install page, taxila-marks.html. */
+   Installed bookmarks load this file from GitHub main on every click, so pushing it updates everyone.
+   Run `node test.js` before pushing; run `node build.js` only if the loader in build.js changes. */
 (async function taxilaMarks() {
   var BASE = 'https://taxila-aws.bits-pilani.ac.in';
   if (location.origin !== BASE) {
