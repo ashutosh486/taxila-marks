@@ -1,9 +1,15 @@
 // Builds taxila-marks.html (bookmark install page) from taxila-marks.js. Run: node build.js
 const fs = require('fs');
 require('./test.js'); // throws (and stops the build) if a rule broke
-// The bookmark is a loader: each click fetches taxila-marks.js from main, so a push reaches everyone (GitHub caches it up to 5 min).
+// The bookmark is a small loader that rarely changes: it runs the copy of taxila-marks.js saved in Taxila's localStorage,
+// downloading it from GitHub only on first use (or after storage is cleared). Updates come via the panel's Update button.
+// A saved copy that fails to start is deleted, so the next click downloads a fresh one.
 const SRC = 'https://raw.githubusercontent.com/ashutosh486/taxila-marks/main/taxila-marks.js';
-const loader = `fetch('${SRC}',{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text();}).then(eval).catch(function(e){alert('Taxila Marks could not load: '+e.message);});void 0`;
+const loader = `(function(){var c;try{c=localStorage.getItem('tm-code')}catch(e){}
+function run(t){try{(0,eval)(t)}catch(e){localStorage.removeItem('tm-code');alert('Taxila Marks failed to start: '+e.message+' Click the bookmark again.')}}
+if(c)return run(c);
+fetch('${SRC}',{cache:'no-store'}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text()}).then(function(t){
+if(location.origin==='https://taxila-aws.bits-pilani.ac.in')localStorage.setItem('tm-code',t);run(t)}).catch(function(e){alert('Taxila Marks could not load: '+e.message)})})();void 0`;
 const url = 'javascript:' + encodeURIComponent(loader);
 // encodeURIComponent leaves no " < > & so the URL is safe inside a double-quoted attribute and a textarea.
 if (/["<>&]/.test(url)) throw new Error('unexpected character in bookmarklet URL');
@@ -33,7 +39,7 @@ fs.writeFileSync(__dirname + '/taxila-marks.html', `<!doctype html>
 <main>
   <h1>Taxila Marks</h1>
   <p>Shows your marks, upcoming deadlines and submission status for every Taxila course in one overlay. It runs only on a Taxila page while you're logged in.</p>
-  <p>It reads your own Taxila pages in your browser and sends nothing anywhere else. Each click loads the latest version of the code from GitHub, so you get fixes without reinstalling. It doesn't change anything on Taxila or submit anything.</p>
+  <p>It reads your own Taxila pages in your browser and sends nothing anywhere else. When a new version is out, the panel shows an Update button. Click it to update; you never need to reinstall the bookmark. It doesn't change anything on Taxila or submit anything.</p>
 
   <h2>Install</h2>
   <p>Drag this button onto your bookmarks bar (press Ctrl+Shift+B, or Cmd+Shift+B on a Mac, if the bar is hidden):</p>

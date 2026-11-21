@@ -1,8 +1,11 @@
 /* Taxila Marks: bookmarklet showing marks, deadlines and submission status across all Taxila (Moodle) courses.
-   Installed bookmarks load this file from GitHub main on every click, so pushing it updates everyone.
-   Run `node test.js` before pushing; run `node build.js` only if the loader in build.js changes. */
+   The bookmark runs a copy saved in the browser and offers an Update button when version.txt on GitHub main is newer.
+   To release: bump VERSION below AND version.txt (test.js checks they match), run `node test.js`, push.
+   Run `node build.js` only if the loader in build.js changes. */
 (async function taxilaMarks() {
   var BASE = 'https://taxila-aws.bits-pilani.ac.in';
+  var VERSION = 1;
+  var REPO = 'https://raw.githubusercontent.com/ashutosh486/taxila-marks/main/';
   if (location.origin !== BASE) {
     if (confirm('Taxila Marks only works on a Taxila page. Open Taxila now? (Click the bookmark again once it loads.)')) {
       location.href = BASE + '/grade/report/overview/index.php';
@@ -18,15 +21,23 @@
   ov.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:rgba(20,20,18,.55);overflow:auto;overscroll-behavior:contain;padding:32px 16px;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;color:' + C.ink;
   var box = document.createElement('div');
   box.style.cssText = 'background:#fff;max-width:820px;margin:0 auto;border-radius:12px;box-shadow:0 24px 60px rgba(0,0,0,.35);padding:22px 26px 26px;position:relative';
-  box.innerHTML = '<div style="color:' + C.muted + '">Loading your marks and deadlines…</div>';
-  // Only ✕ closes the panel. It stays in the corner while you scroll, and also covers the loading and error states.
+  // Only ✕ closes the panel. It sits in the panel's top-right corner and sticks there while you scroll
+  // (zero-height sticky bar, so it takes no space). It also covers the loading and error states.
+  var bar = document.createElement('div');
+  bar.style.cssText = 'position:sticky;top:22px;height:0;display:flex;justify-content:flex-end;z-index:1';
   var x = document.createElement('button');
   x.textContent = '✕';
   x.title = 'Close';
   x.setAttribute('aria-label', 'Close');
-  x.style.cssText = 'position:fixed;top:16px;right:16px;border:0;background:#fff;width:36px;height:36px;border-radius:10px;font-size:16px;cursor:pointer;color:' + C.ink + ';box-shadow:0 2px 8px rgba(0,0,0,.3)';
+  x.style.cssText = 'margin:-10px -14px 0 0;border:0;background:#fff;width:36px;height:36px;border-radius:10px;font-size:16px;cursor:pointer;color:' + C.ink + ';box-shadow:0 1px 6px rgba(0,0,0,.25)';
+  bar.appendChild(x);
+  // "New version" notice; kept outside `content` so re-rendering the panel doesn't wipe it.
+  var upd = document.createElement('div');
+  upd.style.cssText = 'display:none;margin:0 40px 14px 0;padding:8px 12px;border-radius:8px;background:' + C.midBg;
+  var content = document.createElement('div');
+  content.innerHTML = '<div style="color:' + C.muted + '">Loading your marks and deadlines…</div>';
+  box.append(bar, upd, content);
   ov.appendChild(box);
-  ov.appendChild(x);
   // Scroll the panel, not the Taxila page behind it.
   ov.dataset.prevOverflow = document.documentElement.style.overflow;
   document.documentElement.style.overflow = 'hidden';
@@ -34,6 +45,25 @@
 
   function close() { document.documentElement.style.overflow = ov.dataset.prevOverflow; ov.remove(); }
   x.onclick = close;
+
+  // Update check: fetch only the tiny version.txt; download the code only when the user clicks Update.
+  fetch(REPO + 'version.txt', { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (v) {
+    if (!(Number(v) > VERSION)) return;
+    upd.innerHTML = 'A new version of Taxila Marks is available. <button style="margin-left:8px;padding:4px 12px;border:1px solid ' + C.line + ';border-radius:6px;background:#fff;font:inherit;font-weight:600;cursor:pointer">Update</button>';
+    upd.style.display = '';
+    var b = upd.querySelector('button');
+    b.onclick = function () {
+      b.disabled = true;
+      b.textContent = 'Updating…';
+      fetch(REPO + 'taxila-marks.js', { cache: 'no-store' }).then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
+      }).then(function (code) {
+        localStorage.setItem('tm-code', code); // the bookmark runs this saved copy from now on
+        (0, eval)(code); // reopens the panel on the new version (it removes this one)
+      }).catch(function () { b.disabled = false; b.textContent = 'Update failed, try again'; });
+    };
+  }).catch(function () {}); // offline or GitHub unreachable: skip the check quietly
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function fmt(n) { return Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/0+$/, '').replace(/\.$/, ''); }
@@ -300,7 +330,7 @@
       html += '<div role="tabpanel" data-panel="' + s + '">' + groups[s].html
         + (e.length ? '<div style="color:' + C.muted + ';font-size:13px">No graded items in: ' + e.map(esc).join(', ') + '</div>' : '') + '</div>';
     });
-    box.innerHTML = html;
+    content.innerHTML = html;
     function show(s) {
       box.querySelectorAll('[data-sem]').forEach(function (b) {
         var on = b.dataset.sem === s;
@@ -315,6 +345,6 @@
     // Open links in a new tab: navigating this tab would destroy the panel (a bookmarklet can't come back after Back).
     box.querySelectorAll('a').forEach(function (a) { a.target = '_blank'; a.rel = 'noopener'; });
   } catch (e) {
-    box.innerHTML = '<div style="color:' + C.low + '">' + esc(e.message || e) + '</div>';
+    content.innerHTML = '<div style="color:' + C.low + '">' + esc(e.message || e) + '</div>';
   }
 })();
