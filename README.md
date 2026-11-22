@@ -11,6 +11,15 @@ It works in desktop Chrome, Edge, Brave, Firefox and Safari while you're logged 
 
 You install it once, as a bookmark. After that, updates arrive through an Update button in the panel; you never need to reinstall.
 
+### Easiest: drag the button
+
+1. Open the **[install page](https://ashutosh486.github.io/taxila-marks/)**.
+2. Drag the green **📊 Taxila Marks** button onto your bookmarks bar. If the bar is hidden, press `Ctrl+Shift+B` (Windows/Linux) or `Cmd+Shift+B` (Mac) first.
+
+That's it. If dragging doesn't work in your browser, use the manual steps below.
+
+### Manual: paste the code into a bookmark
+
 **1. Copy the bookmark code.** Hover over the box below and click the copy icon in its top-right corner.
 
 <!-- bookmark -->
@@ -76,4 +85,4 @@ On a Taxila page, open the browser console (`Ctrl+Shift+J`, or `Cmd+Option+J` on
 
 - Edit [taxila-marks.js](taxila-marks.js). Users receive it through the Update button.
 - To release: bump `VERSION` in `taxila-marks.js` and the number in [version.txt](version.txt), add a `## Version N` entry to [CHANGELOG.md](CHANGELOG.md), run `node test.js`, and push to `main`. GitHub can take up to 5 minutes to serve the new files.
-- The bookmark code itself lives in [build.js](build.js). Change it only if you have to, since everyone would need to reinstall. After changing it, run `node build.js`: it rebuilds the install page [taxila-marks.html](taxila-marks.html) and the code box in this README.
+- The bookmark code itself lives in [build.js](build.js). Change it only if you have to, since everyone would need to reinstall. After changing it, run `node build.js`: it rebuilds the install page [index.html](index.html) (live at the GitHub Pages link above) and the code box in this README.

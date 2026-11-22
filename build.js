@@ -1,4 +1,4 @@
-// Builds taxila-marks.html (bookmark install page) from taxila-marks.js. Run: node build.js
+// Builds index.html (the bookmark install page, served by GitHub Pages) from taxila-marks.js. Run: node build.js
 const fs = require('fs');
 require('./test.js'); // throws (and stops the build) if a rule broke
 // The bookmark is a small loader that rarely changes: it runs the copy of taxila-marks.js saved in Taxila's localStorage,
@@ -14,7 +14,7 @@ const url = 'javascript:' + encodeURIComponent(loader);
 // encodeURIComponent leaves no " < > & so the URL is safe inside a double-quoted attribute and a textarea.
 if (/["<>&]/.test(url)) throw new Error('unexpected character in bookmarklet URL');
 
-fs.writeFileSync(__dirname + '/taxila-marks.html', `<!doctype html>
+fs.writeFileSync(__dirname + '/index.html', `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -66,7 +66,7 @@ fs.writeFileSync(__dirname + '/taxila-marks.html', `<!doctype html>
 </body>
 </html>
 `);
-console.log('wrote taxila-marks.html');
+console.log('wrote index.html');
 // Keep the README's copy-paste box identical to the install page's bookmark.
 const readme = fs.readFileSync(__dirname + '/README.md', 'utf8');
 const box = /<!-- bookmark -->[\s\S]*?<!-- \/bookmark -->/;
