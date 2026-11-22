@@ -18,7 +18,7 @@ You install it once, as a bookmark. After that, updates arrive through an Update
 ### Easiest: drag the button
 
 1. Open the **[install page](https://ashutosh486.github.io/taxila-marks/)**.
-2. Drag the green **📊 Taxila Marks** button onto your bookmarks bar. If the bar is hidden, press `Ctrl+Shift+B` (Windows/Linux) or `Cmd+Shift+B` (Mac) first.
+2. Drag the green **Taxila Marks** button onto your bookmarks bar. If the bar is hidden, press `Ctrl+Shift+B` (Windows/Linux) or `Cmd+Shift+B` (Mac) first.
 
 That's it. If dragging doesn't work in your browser, use the manual steps below.
 

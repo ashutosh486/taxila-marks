@@ -40,12 +40,12 @@ fs.writeFileSync(__dirname + '/index.html', `<!doctype html>
   <h1>Taxila Marks</h1>
   <p>For BITS Pilani students. Shows your marks, upcoming deadlines and submission status for every Taxila course in one overlay. It runs only on a Taxila page while you're logged in.</p>
   <p>An unofficial, student-made tool, not affiliated with or endorsed by BITS Pilani.</p>
-  <p>Step-by-step screenshots, troubleshooting and privacy details are in the <a href="README.html" style="color:var(--accent)">full guide</a>.</p>
+  <p>Step-by-step screenshots, troubleshooting and privacy details are in the <a href="guide.html" style="color:var(--accent)">full guide</a>.</p>
   <p>It reads your own Taxila pages in your browser and sends nothing anywhere else. When a new version is out, the panel shows an Update button. Click it to update; you never need to reinstall the bookmark. It doesn't change anything on Taxila or submit anything.</p>
 
   <h2>Install</h2>
   <p>Drag this button onto your bookmarks bar (press Ctrl+Shift+B, or Cmd+Shift+B on a Mac, if the bar is hidden):</p>
-  <a class="bm" href="${url}" onclick="alert('Drag this button to your bookmarks bar, then click it there while you are on Taxila.'); return false;">📊 Taxila Marks</a>
+  <a class="bm" href="${url}" onclick="alert('Drag this button to your bookmarks bar, then click it there while you are on Taxila.'); return false;">Taxila Marks</a>
 
   <h2>Or paste it into a bookmark</h2>
   <p>Copy the code, then edit any bookmark and paste it into the URL field.</p>
