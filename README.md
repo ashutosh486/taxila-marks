@@ -1,11 +1,15 @@
 # Taxila Marks
 
-A one-click bookmark that shows your marks, upcoming deadlines and submission status for every Taxila course in one panel, instead of opening each course separately.
+For students in **BITS Pilani**. [Taxila](https://taxila-aws.bits-pilani.ac.in) is the BITS Pilani learning portal where courses, assignments, quizzes and grades live.
+
+Taxila Marks is a one-click bookmark that shows your marks, upcoming deadlines and submission status for every Taxila course in one panel, instead of opening each course separately.
 
 - **Due soon:** assignments and quizzes with a countdown (for example "in 13 h"), split into what you still need to do and what you've already submitted.
 - **My marks:** every graded item in every course, coloured green, amber or red by score, with one tab per semester.
 
 It works in desktop Chrome, Edge, Brave, Firefox and Safari while you're logged in to Taxila.
+
+> This is an unofficial tool made by a student. It is not affiliated with, endorsed by or supported by BITS Pilani. For problems with Taxila itself, contact BITS; for problems with this tool, [open an issue](https://github.com/ashutosh486/taxila-marks/issues).
 
 ## Install
 
