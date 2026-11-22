@@ -67,3 +67,9 @@ fs.writeFileSync(__dirname + '/taxila-marks.html', `<!doctype html>
 </html>
 `);
 console.log('wrote taxila-marks.html');
+// Keep the README's copy-paste box identical to the install page's bookmark.
+const readme = fs.readFileSync(__dirname + '/README.md', 'utf8');
+const box = /<!-- bookmark -->[\s\S]*?<!-- \/bookmark -->/;
+if (!box.test(readme)) throw new Error('README.md is missing its <!-- bookmark --> markers');
+fs.writeFileSync(__dirname + '/README.md', readme.replace(box, () => '<!-- bookmark -->\n```\n' + url + '\n```\n<!-- /bookmark -->'));
+console.log('updated README.md');

@@ -1,10 +1,11 @@
 /* Taxila Marks: bookmarklet showing marks, deadlines and submission status across all Taxila (Moodle) courses.
    The bookmark runs a copy saved in the browser and offers an Update button when version.txt on GitHub main is newer.
-   To release: bump VERSION below AND version.txt (test.js checks they match), run `node test.js`, push.
+   To release: bump VERSION below AND version.txt, add a `## Version N` entry to CHANGELOG.md
+   (test.js checks all three), run `node test.js`, push.
    Run `node build.js` only if the loader in build.js changes. */
 (async function taxilaMarks() {
   var BASE = 'https://taxila-aws.bits-pilani.ac.in';
-  var VERSION = 2;
+  var VERSION = 3;
   var REPO = 'https://raw.githubusercontent.com/ashutosh486/taxila-marks/main/';
   if (location.origin !== BASE) {
     if (confirm('Taxila Marks only works on a Taxila page. Open Taxila now? (Click the bookmark again once it loads.)')) {
@@ -45,7 +46,7 @@
   // Update check: fetch only the tiny version.txt; download the code only when the user clicks Update.
   fetch(REPO + 'version.txt', { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (v) {
     if (!(Number(v) > VERSION)) return;
-    upd.innerHTML = 'A new version of Taxila Marks is available. <button style="margin-left:8px;padding:4px 12px;border:1px solid ' + C.line + ';border-radius:6px;background:#fff;font:inherit;font-weight:600;cursor:pointer">Update</button>';
+    upd.innerHTML = 'A new version of Taxila Marks is available. <a href="https://github.com/ashutosh486/taxila-marks/blob/main/CHANGELOG.md" target="_blank" rel="noopener" style="color:' + C.ink + '">See what\'s new</a> <button style="margin-left:8px;padding:4px 12px;border:1px solid ' + C.line + ';border-radius:6px;background:#fff;font:inherit;font-weight:600;cursor:pointer">Update</button>';
     upd.style.display = '';
     var b = upd.querySelector('button');
     b.onclick = function () {

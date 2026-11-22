@@ -5,6 +5,8 @@ const src = require('fs').readFileSync(__dirname + '/taxila-marks.js', 'utf8');
 
 // Release check: VERSION in the code must match version.txt, or users never see (or keep seeing) the Update button.
 assert.strictEqual(src.match(/var VERSION = (\d+);/)[1], require('fs').readFileSync(__dirname + '/version.txt', 'utf8').trim(), 'bump VERSION and version.txt together');
+// The update bar links to CHANGELOG.md, so every release needs its entry there.
+assert(require('fs').readFileSync(__dirname + '/CHANGELOG.md', 'utf8').includes('## Version ' + src.match(/var VERSION = (\d+);/)[1] + '\n'), 'add a "## Version N" entry to CHANGELOG.md');
 const code = src.match(/ {2}var C = [^\n]*\n/)[0] + src.slice(src.indexOf('  function esc'), src.indexOf('  async function upcoming'));
 const f = new Function('BASE', code + 'return { isSubmitted, isPast, countdown, eventStatus, tidy, byKind, parseGrades, semOf, semKey };')('https://taxila.test');
 
