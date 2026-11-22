@@ -4,7 +4,7 @@
    Run `node build.js` only if the loader in build.js changes. */
 (async function taxilaMarks() {
   var BASE = 'https://taxila-aws.bits-pilani.ac.in';
-  var VERSION = 1;
+  var VERSION = 2;
   var REPO = 'https://raw.githubusercontent.com/ashutosh486/taxila-marks/main/';
   if (location.origin !== BASE) {
     if (confirm('Taxila Marks only works on a Taxila page. Open Taxila now? (Click the bookmark again once it loads.)')) {
@@ -21,22 +21,18 @@
   ov.style.cssText = 'position:fixed;inset:0;z-index:2147483647;background:rgba(20,20,18,.55);overflow:auto;overscroll-behavior:contain;padding:32px 16px;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;color:' + C.ink;
   var box = document.createElement('div');
   box.style.cssText = 'background:#fff;max-width:820px;margin:0 auto;border-radius:12px;box-shadow:0 24px 60px rgba(0,0,0,.35);padding:22px 26px 26px;position:relative';
-  // Only ✕ closes the panel. It sits in the panel's top-right corner and sticks there while you scroll
-  // (zero-height sticky bar, so it takes no space). It also covers the loading and error states.
-  var bar = document.createElement('div');
-  bar.style.cssText = 'position:sticky;top:22px;height:0;display:flex;justify-content:flex-end;z-index:1';
+  // Only ✕ closes the panel. It is fixed to the panel's top-right corner and also covers the loading and error states.
   var x = document.createElement('button');
   x.textContent = '✕';
   x.title = 'Close';
   x.setAttribute('aria-label', 'Close');
-  x.style.cssText = 'margin:-10px -14px 0 0;border:0;background:#fff;width:36px;height:36px;border-radius:10px;font-size:16px;cursor:pointer;color:' + C.ink + ';box-shadow:0 1px 6px rgba(0,0,0,.25)';
-  bar.appendChild(x);
+  x.style.cssText = 'position:absolute;top:12px;right:12px;border:0;background:' + C.soft + ';width:36px;height:36px;border-radius:10px;font-size:16px;cursor:pointer;color:' + C.ink;
   // "New version" notice; kept outside `content` so re-rendering the panel doesn't wipe it.
   var upd = document.createElement('div');
   upd.style.cssText = 'display:none;margin:0 40px 14px 0;padding:8px 12px;border-radius:8px;background:' + C.midBg;
   var content = document.createElement('div');
   content.innerHTML = '<div style="color:' + C.muted + '">Loading your marks and deadlines…</div>';
-  box.append(bar, upd, content);
+  box.append(x, upd, content);
   ov.appendChild(box);
   // Scroll the panel, not the Taxila page behind it.
   ov.dataset.prevOverflow = document.documentElement.style.overflow;
