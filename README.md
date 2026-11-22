@@ -42,15 +42,15 @@ javascript:(function()%7Bvar%20c%3Btry%7Bc%3DlocalStorage.getItem('tm-code')%7Dc
 
 **a.** Right-click an empty spot on the bookmarks bar and choose **Add Page…**
 
-<img src="docs/screenshots/chrome-1-menu.png" alt="Bookmarks bar right-click menu with Add Page… highlighted" width="300">
+<img src="docs/screenshots/chrome/chrome-1-menu.png" alt="Bookmarks bar right-click menu with Add Page… highlighted" width="300">
 
 **b.** Type `Taxila Marks` as the **Name**. Delete whatever is in **URL**, paste the code, and click **Save**. Leave the folder as **Bookmarks bar**.
 
-<img src="docs/screenshots/chrome-2-dialog.png" alt="Bookmark dialog with the name Taxila Marks, the code pasted into URL, and Save highlighted" width="540">
+<img src="docs/screenshots/chrome/chrome-2-dialog.png" alt="Bookmark dialog with the name Taxila Marks, the code pasted into URL, and Save highlighted" width="540">
 
 **c.** **Taxila Marks** now appears on your bookmarks bar. Open a Taxila page and click it.
 
-<img src="docs/screenshots/chrome-3-done.png" alt="Bookmarks bar showing the new Taxila Marks bookmark" width="443">
+<img src="docs/screenshots/chrome/chrome-3-done.png" alt="Bookmarks bar showing the new Taxila Marks bookmark" width="443">
 
 ## Use
 
