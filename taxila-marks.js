@@ -5,7 +5,7 @@
    Run `node build.js` only if the loader in build.js changes. */
 (async function taxilaMarks() {
   var BASE = 'https://taxila-aws.bits-pilani.ac.in';
-  var VERSION = 3;
+  var VERSION = 4;
   var REPO = 'https://raw.githubusercontent.com/ashutosh486/taxila-marks/main/';
   if (location.origin !== BASE) {
     if (confirm('Taxila Marks only works on a Taxila page. Open Taxila now? (Click the bookmark again once it loads.)')) {
@@ -33,7 +33,14 @@
   upd.style.cssText = 'display:none;margin:0 40px 14px 0;padding:8px 12px;border-radius:8px;background:' + C.midBg;
   var content = document.createElement('div');
   content.innerHTML = '<div style="color:' + C.muted + '">Loading your marks and deadlines…</div>';
-  box.append(x, upd, content);
+  // "Report a bug" sits below `content`, so it shows in the loading, error and loaded states alike.
+  // The issue is prefilled with the version and browser only, never your marks.
+  var bug = document.createElement('div');
+  bug.style.cssText = 'margin-top:18px;padding-top:12px;border-top:1px solid ' + C.line + ';text-align:right';
+  bug.innerHTML = '<a target="_blank" rel="noopener" href="https://github.com/ashutosh486/taxila-marks/issues/new?title=' + encodeURIComponent('Bug: ')
+    + '&body=' + encodeURIComponent('What happened:\n\n\nWhat you expected:\n\n\n---\nVersion: ' + VERSION + '\nBrowser: ' + navigator.userAgent)
+    + '" style="display:inline-block;padding:6px 12px;border:1px solid ' + C.line + ';border-radius:8px;background:' + C.soft + ';color:' + C.ink + ';font-size:13px;text-decoration:none">Report a bug</a>';
+  box.append(x, upd, content, bug);
   ov.appendChild(box);
   // Scroll the panel, not the Taxila page behind it.
   ov.dataset.prevOverflow = document.documentElement.style.overflow;
